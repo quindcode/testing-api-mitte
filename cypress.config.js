@@ -1,5 +1,6 @@
 const { defineConfig } = require("cypress");
 const oracledb = require("oracledb");
+//const mssql = require('mssql');
 require("dotenv").config();
 const { beforeRunHook, afterRunHook } = require('cypress-mochawesome-reporter/lib');
 const { getTemporaryCredentials } = require('./cypress/support/utils/AWSConnection.js');
@@ -12,7 +13,7 @@ const connection = {
   connectString: process.env.DB_CONNECT_STRING,
 };
 
-// Establece la función para realizar consultas a la base de datos Oracle
+
 // Establece la función para realizar consultas a la base de datos Oracle
 function queryDB(query) {
   return new Promise((resolve, reject) => {
@@ -50,6 +51,8 @@ function queryDB(query) {
   });
 }
 
+
+
 module.exports = defineConfig({
   // Ajusta el tiempo de espera predeterminado en milisegundos
   defaultCommandTimeout: 5000,
@@ -64,7 +67,7 @@ module.exports = defineConfig({
   },
   e2e: {
     // Al iniciar la prueba esta será la url base
-    baseUrl: "https://reqres.in/api",
+    baseUrl: "https://test.security.flypass.co/flypass",
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);
       on("task", {

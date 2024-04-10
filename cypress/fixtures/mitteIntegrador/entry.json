@@ -1,0 +1,7 @@
+{
+    "sessionId": "{{sessionId}}",
+    "facilityId": "{{facilityId}}",
+    "actualStart":"{{actualStart}}",
+    "credentialType": "{{credentialType}}",
+    "localIdentifier": "{{localIdentifier}}"
+}

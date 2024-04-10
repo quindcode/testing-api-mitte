@@ -1,0 +1,7 @@
+actualEnd=2024-04-10 17:55:24
+sessionId=009abri-202-4mit-te00-entradaAuto00001
+facilityId=123
+stayAmountSa=300
+actualStart=2024-04-10 15:20:24
+credentialType=LICENSE_PLATE
+localIdentifier=MIT123

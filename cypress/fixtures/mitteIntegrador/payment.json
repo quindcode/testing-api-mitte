@@ -1,0 +1,10 @@
+{
+    "currency": "COP",
+    "actualEnd": "{{actualEnd}}",
+    "sessionId": "{{sessionId}}",
+    "facilityId": "{{facilityId}}",
+    "stayAmount": "{{stayAmountSa}}",
+    "actualStart":"{{actualStart}}",
+    "credentialType": "{{credentialType}}",
+    "localIdentifier": "{{localIdentifier}}"
+}

@@ -1,5 +1,5 @@
-sessionId=010abri-202-4mit-te00-entradaAuto00002
+sessionId=4165165165-6515616-564f
 facilityId=123
-actualStart=2024-04-10 15:20:24
+actualStart=2024-04-10 16:39:24
 credentialType=LICENSE_PLATE
-localIdentifier=MIT123
+localIdentifier=LMA530

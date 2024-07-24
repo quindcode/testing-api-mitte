@@ -12,7 +12,10 @@ Cypress.Commands.add('loginCognito', () => {
             body: loginCognito
         }).then((response) => {
             // Retorna la respuesta completa de la solicitud
+            
             return response.body.AuthenticationResult.IdToken;
+            
         });
+        
     });
 });

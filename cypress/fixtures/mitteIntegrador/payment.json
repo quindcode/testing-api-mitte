@@ -1,10 +1,10 @@
 {
-    "currency": "COP",
-    "actualEnd": "{{actualEnd}}",
-    "sessionId": "{{sessionId}}",
-    "facilityId": "{{facilityId}}",
-    "stayAmount": "{{stayAmountSa}}",
-    "actualStart":"{{actualStart}}",
-    "credentialType": "{{credentialType}}",
-    "localIdentifier": "{{localIdentifier}}"
+  "sessionId": "35461121050045623",
+  "facilityId": "123",
+  "actualStart": "2024-07-18 17:44:49",
+  "credentialType": "LICENSE_PLATE",
+  "localIdentifier": "ROB714",
+  "currency": "COP",
+  "actualEnd": "2024-07-18 17:44:59",
+  "stayAmount": "200"
 }

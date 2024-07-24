@@ -2,6 +2,8 @@
 *.env
 ## librerías del proyecto
 node_modules/
+/jsonlogs
+/reports
 ## archivos autogenerados
 .DS_Store
 cypress/videos

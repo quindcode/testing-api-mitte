@@ -1,15 +1,16 @@
-Cypress.Commands.add('createPayment', (actualEnd, sessionId, facilityId,stayAmountSa, actualStart, credentialType, localIdentifier,authToken) => {
+Cypress.Commands.add('createPayment', (currency, actualEnd, sessionId, facilityId,stayAmount, actualStart, credentialType, localIdentifier,authToken) => {
         return cy.fixture('mitteIntegrador/payment.json').then((fixture) => {
             const variables = {
+                currency: currency,
                 actualEnd: actualEnd,
                 sessionId: sessionId,
                 facilityId: facilityId,
-                stayAmountSa: stayAmountSa,
+                stayAmount: stayAmount,
                 actualStart: actualStart,
                 credentialType: credentialType,
                 localIdentifier: localIdentifier,
             };
-            return cy.replaceVariables(fixture, variables).then((requestBody) => {
+            cy.log('Datos con los cuales se genera la salida:', JSON.stringify(variables))            
                 return cy.request({
                     method: 'POST',
                     url: 'https://cert-providers.flypass.com.co/mitte/api/v1/webhooks/usage/end',
@@ -19,11 +20,10 @@ Cypress.Commands.add('createPayment', (actualEnd, sessionId, facilityId,stayAmou
                         'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json'
                     },
-                    body: requestBody
+                    body: variables
                 }).then((response) => {
                     // Retorna la respuesta completa de la solicitud
                     return response;
-                });
-            });
+                });           
         });
 });

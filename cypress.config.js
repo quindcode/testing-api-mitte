@@ -10,7 +10,7 @@ const { getTemporaryCredentials } = require('./cypress/support/utils/AWSConnecti
 const connection = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  connectString: process.env.DB_CONNECT_STRING,
+  connectString: process.env.DB_CONNECT_STRING
 };
 
 

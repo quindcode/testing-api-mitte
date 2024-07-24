@@ -1,7 +1,7 @@
 {
-    "sessionId": "{{sessionId}}",
-    "facilityId": "{{facilityId}}",
-    "actualStart":"{{actualStart}}",
-    "credentialType": "{{credentialType}}",
-    "localIdentifier": "{{localIdentifier}}"
+  "sessionId": "37236067210154372",
+  "facilityId": "123",
+  "actualStart": "2024-07-18 17:42:59",
+  "credentialType": "LICENSE_PLATE",
+  "localIdentifier": "ROB714"
 }

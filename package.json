@@ -10,10 +10,13 @@
     "ajv": "latest",
     "aws-sdk": "latest",
     "aws-sdk-mock": "latest",
-    "cypress": "latest",
+    "cypress": "^13.13.1",
     "cypress-mochawesome-reporter": "latest",
     "cypress-xpath": "latest",
     "dotenv": "latest",
     "oracledb": "latest"
+  },
+  "dependencies": {
+    "uuid": "^10.0.0"
   }
 }

@@ -9,5 +9,4 @@ class ExitWhitZeroPayment {
             cy.writeFile('cypress/fixtures/mitteIntegrador/payment.json', data)
         })
     }
-
 } export default ExitWhitZeroPayment

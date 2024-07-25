@@ -18,12 +18,15 @@ class CreateEntry {
     })
   }
 
-
   sendData(incorrect) {
     cy.readFile('cypress/fixtures/mitteIntegrador/entry.json').then((data) => {
       //Genero token para postman
       cy.loginCognito().then((authToken) => {
-        return cy.createEntry(data.sessionId, data.facilityId, data.actualStart, data.credentialType, data.localIdentifier, authToken)
+        const createInfo = {
+          ...data,
+          authToken
+        }
+        return cy.createEntry(createInfo, authToken)
           .then((response) => {
             this.response = response
             if (incorrect) {
@@ -41,16 +44,13 @@ class CreateEntry {
   }
 
   sendEntry() {
-
     this.sendData(false)
-
   }
 
   executeSQLQuery(data, attempt = 1) {
     const MAX_ATTEMPTS = 3;
     const RETRY_DELAY = 30000;
     const serviceMovementSQL = `SELECT * FROM FLYPASS_PDN.TFPS_MVTOS_COBRO_SERVICIOS WHERE CDPUNTO_ATENCION_SER = 198 AND CDNUMERO_TRANSACCION_EXTERNA ='${data.sessionId}' and CDESTADO=0`;
-
     cy.task('queryDatabase', { query: serviceMovementSQL }).then((movement_result) => {
       if (movement_result.length >= 1) {
         const finalizedTransactionStatus = 0;
@@ -81,9 +81,7 @@ class CreateEntry {
 
 
   validateResponseIncorrect() {
-
     this.sendData(true)
-
   }
 
 

@@ -1,10 +1,6 @@
 import CreateEntry from "./CreateEntry.cy";
 
-
 const createEntry = new CreateEntry()
-
-
-
 class ExitWhitEntry {
     response = null
     time = 10000
@@ -16,11 +12,8 @@ class ExitWhitEntry {
             data.actualEnd = ""
             data.stayAmount = "200"
             cy.writeFile('cypress/fixtures/mitteIntegrador/payment.json', data)
-
         })
-
     }
-
 
     departureDate() {
         cy.wait(this.time)
@@ -28,19 +21,21 @@ class ExitWhitEntry {
             cy.generarfechaactual().then((actualEnd) => {
                 data.actualEnd = actualEnd
                 cy.writeFile('cypress/fixtures/mitteIntegrador/payment.json', data)
-
             })
         })
-
     }
 
     sendDataOutput() {
         cy.readFile('cypress/fixtures/mitteIntegrador/payment.json').then((data) => {
             cy.loginCognito().then((authToken) => {
-                return cy.createPayment(data.currency, data.actualEnd, data.sessionId, data.facilityId, data.stayAmount, data.actualStart, data.credentialType, data.localIdentifier, authToken)
+                const paymentInfo = {
+                    ...data,
+                    authToken 
+                };
+                return cy.createPayment(paymentInfo, authToken)
                     .then((response) => {
-                        this.response = response
-                    })
+                        this.response = response;
+                    });
             })
         })
     }
@@ -49,7 +44,6 @@ class ExitWhitEntry {
         const MAX_ATTEMPTS = 3;
         const RETRY_DELAY = 30000;
         const serviceMovementSQL = `SELECT * FROM FLYPASS_PDN.TFPS_MVTOS_COBRO_SERVICIOS WHERE CDPUNTO_ATENCION_SER = 198 AND CDNUMERO_TRANSACCION_EXTERNA ='${data.sessionId}' and CDESTADO=1`;
-
         cy.task('queryDatabase', { query: serviceMovementSQL }).then((movement_result) => {
             if (movement_result.length >= 1) {
                 const finalizedTransactionStatus = 1;
@@ -66,7 +60,6 @@ class ExitWhitEntry {
         });
     }
 
-
     validateOutput() {
         cy.readFile('cypress/fixtures/mitteIntegrador/payment.json').then((data) => {
             if (this.response.status !== 200) {
@@ -78,6 +71,5 @@ class ExitWhitEntry {
             }
         })
     }
-
 }
 export default ExitWhitEntry

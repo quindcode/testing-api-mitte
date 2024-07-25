@@ -24,9 +24,6 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-//import "./commands/scheme_validator"
-//import "./utils/replace_variables"
-
 import "./commands/loginCognito"
 import "./commands/createEntry"
 import "./commands/createPayment"

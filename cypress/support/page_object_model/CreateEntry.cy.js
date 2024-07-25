@@ -7,12 +7,10 @@ class CreateEntry {
       //Genero la fecha del dia actual
       cy.generarfechaactual().then((actualStart) => {
         data.actualStart = actualStart;
-        cy.log("fecha actual es:", actualStart)
         //Genero sesionID 
         cy.getUniqueSessionId().then((sessionId) => {
           data.sessionId = sessionId
           cy.writeFile('cypress/fixtures/mitteIntegrador/entry.json', data)
-          cy.log("el id actual es:", sessionId)
         })
       })
     })

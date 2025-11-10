@@ -67,7 +67,8 @@ module.exports = defineConfig({
   },
   e2e: {
     // Al iniciar la prueba esta será la url base
-    baseUrl: "https://test.security.flypass.co/flypass",
+    baseUrl: "https://cert-providers.flypass.com.co/",
+
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);
       on("task", {

@@ -1,7 +1,4 @@
 {
-  "sessionId": "340520200370644344",
-  "facilityId": "123",
-  "actualStart": "2024-07-24 21:00:22",
-  "credentialType": "LICENSE_PLATE",
-  "localIdentifier": "ROB714"
+  "placeId": "b2fd3d08-bc40-4a83-a02d-cbba97148fb3", 
+  "credentialType": "LICENSE_PLATE"
 }

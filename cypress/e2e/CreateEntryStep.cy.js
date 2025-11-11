@@ -1,6 +1,7 @@
 import {CreateEntry} from "../support/page_object_model/CreateEntry.cy";
 import { DataGenerate } from "../support/utils/DataGenerate";
-
+import { EntryAsserts } from "../support/asserts/EntryAsserts";
+import { DatabaseAsserts } from "../support/asserts/DatabaseAsserts";
  
 
  describe('Crear entrada a un parqueadero de Mitte', function () {
@@ -17,42 +18,29 @@ import { DataGenerate } from "../support/utils/DataGenerate";
           {
                description: 'Validar la entrada exitosa de un vehículo a un parqueadero mite con el servicio de Flypass',
                dataToUse: DataGenerate.getAuthorizedEntry(),
-               //ira lo que se debe validar
+               validator: (response,data)=>{
+                    EntryAsserts.validateSuccessResponse(response);
+                    DatabaseAsserts.validateTransactionCreated(data.sessionId)
+               }
           },
           {
                description: 'Validar la entrada RECHAZADA por placa no autorizada',
                dataToUse: DataGenerate.getUnauthorizedEntry(),
-               //Ira lo que se debe validar
+               validator: (respone, data)=>{
+                    EntryAsserts.validateUnauthorizedResponse(respone)
+               }
+                    
           }
      ]
 
      testCases.forEach((testCase) => {
           it(testCase.description, function() {
-               
+               const entryData = testCase.dataToUse;
+
                CreateEntry.sendEntry(testCase.dataToUse, this.idToken)
                .then((response)=>{
-                    testCase.validator();
+                    testCase.validator(response, entryData);
                })
           });
      });
  });
-
-
-
-
-
-/*const createEntry = new CreateEntry();
-
-describe('Crear Entrada', () => {
-     const sessionId = generateSessionId();
-     const actualStart = generateDate();
-
-     it('Validar la entrada exitosa de un vehículo a un parqueadero mite con el servicio de Flypass', () => {
-          createEntry.dynamicDateSessionid()
-          createEntry.sendEntry()
-          createEntry.validateResponseCorrect()
-     });
-     it('Validar la entrada no exitosa de un vehículo a un parqueadero MITE con el servicio de Flypass, cuando ya existe una entrada con datos exactamente iguales registrada en el sistema', () => {
-          createEntry.validateResponseIncorrect()
-     });
-});*/

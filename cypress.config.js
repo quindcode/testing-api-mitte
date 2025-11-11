@@ -10,24 +10,25 @@ const { getTemporaryCredentials } = require('./cypress/support/utils/AWSConnecti
 const connection = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  connectString: process.env.DB_CONNECT_STRING
+  connectString: process.env.DB_CONNECT_STRING,
 };
 
 
 // Establece la función para realizar consultas a la base de datos Oracle
-function queryDB(query) {
+function queryDB(query, values = []) { // <-- CAMBIO 1: Acepta 'values'
   return new Promise((resolve, reject) => {
     oracledb.getConnection(connection, (error, connection) => {
       if (error) {
         reject(error);
       } else {
-        connection.execute(query, (error, result) => {
+        // CAMBIO 2: Pasa 'values' a .execute()
+        connection.execute(query, values, (error, result) => { 
           connection.close(() => {
             if (error) {
               reject(error);
             } else {
+              // ... (el resto de tu lógica de procesamiento está perfecta)
               if (result.rows) {
-                // Procesa el resultado para devolverlo como clave-valor (para consultas SELECT)
                 const metaData = result.metaData || [];
                 const processedResult = result.rows.map((row) => {
                   const obj = {};
@@ -38,10 +39,7 @@ function queryDB(query) {
                 });
                 resolve(processedResult);
               } else {
-                // Devuelve información sobre la cantidad de filas afectadas (para UPDATE y DELETE)
-                resolve({
-                  rowsAffected: result.rowsAffected,
-                });
+                resolve({ rowsAffected: result.rowsAffected });
               }
             }
           });
@@ -71,9 +69,16 @@ module.exports = defineConfig({
 
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);
+
+  // 🔹 Carga las variables del archivo .env en Cypress
+      config.env.COGNITO_USERNAME = process.env.COGNITO_USERNAME;
+      config.env.COGNITO_PASSWORD = process.env.COGNITO_PASSWORD;
+      config.env.COGNITO_CLIENT_ID = process.env.COGNITO_CLIENT_ID;
+      //console.log ("Esta es la variable de conexion" , CO)
+
       on("task", {
-        queryDatabase({ query }) {
-          return queryDB(query);
+        queryDatabase({ query,values }) {
+          return queryDB(query, values);
         },
         async awsSetTemporaryCredentials() {
           const awsCredentials = {
@@ -93,6 +98,7 @@ module.exports = defineConfig({
         console.log('override after:run');
         await afterRunHook();
       });
+       return config;
     },
   },
 });

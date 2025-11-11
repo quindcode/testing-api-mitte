@@ -9,7 +9,7 @@ export class DataGenerate{
     static generateEntryData(overrides ={}){
         const dynamicData={
             ...entryDataTemplate,
-            date: generateDate(),
+            actualStart: generateDate(),
             sessionId: generateSessionId(),
             localIdentifier : plate.plateAuthorized
         }

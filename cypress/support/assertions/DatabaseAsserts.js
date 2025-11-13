@@ -1,3 +1,5 @@
+import { DATABASE_CONSTANTS } from "../constants/database.constants";
+
 export class DatabaseAsserts {
 
       /**
@@ -5,30 +7,35 @@ export class DatabaseAsserts {
      * @param {string} sessionId 
      */
     static validateTransactionEntry(sessionId){
-        this.validateTransactionCreated(sessionId, 0)
+        this.validateTransactionCreated(sessionId, 
+        DATABASE_CONSTANTS.TRANSACTION_STATES.ENTRY
+        )
     }
 
  
     static validateTransactionExit(sessionId){
-        this.validateTransactionCreated(sessionId, 1)
+        this.validateTransactionCreated(sessionId, 
+        DATABASE_CONSTANTS.TRANSACTION_STATES.EXIT
+        )
     }
 
 
     static validateTransactionCreated(sessionId, expectState, attempt = 1) {
         
-        const MAX_ATTEMPTS = 3;
-        const RETRY_DELAY = 2000;
+        const {MAX_ATTEMPTS,RETRY_DELAY} = DATABASE_CONSTANTS.RETRY;
+        const {MOVEMENTS}= DATABASE_CONSTANTS.TABLES;
+        const { PLACE_ATTENTION, EXTERNAL_TRANSACTION, STATE } = DATABASE_CONSTANTS.COLUMNS;
         
         cy.log(`Validando BD para ${sessionId} (Intento ${attempt}/${MAX_ATTEMPTS})`);
 
         const query = `
-            SELECT * FROM FLYPASS_PDN.TFPS_MVTOS_COBRO_SERVICIOS 
-            WHERE CDPUNTO_ATENCION_SER = :1 
-            AND CDNUMERO_TRANSACCION_EXTERNA = :2 
-            AND CDESTADO = :3`;
+            SELECT * FROM ${MOVEMENTS} 
+            WHERE ${PLACE_ATTENTION} = :1 
+            AND ${EXTERNAL_TRANSACTION} = :2 
+            AND ${STATE} = :3`;
 
         const values = [
-            198,        // Corresponde a :1
+            DATABASE_CONSTANTS.PLACE_ID, // Corresponde a :1
             sessionId,  // Corresponde a :2
             expectState // Corresponde a :3 (CDESTADO)
         ];
@@ -40,7 +47,7 @@ export class DatabaseAsserts {
                 `La transacción DEBE existir en la BD y tener CDESTADO=${expectState} (sessionId: ${sessionId})`
                 ).to.have.lengthOf(1);
 
-                expect(movement_result[0].CDESTADO).to.be.eq(expectState);
+                expect(movement_result[0][STATE]).to.be.eq(expectState);
                 return    
             }
             
@@ -65,9 +72,12 @@ export class DatabaseAsserts {
     static validateTransactionNotCreated(sessionId) {
         cy.log(`Validando que NO exista en BD: ${sessionId}`);
 
+        const {MOVEMENTS} = DATABASE_CONSTANTS.TABLES;
+        const { EXTERNAL_TRANSACTION } = DATABASE_CONSTANTS.COLUMNS;
+
         const query = `
-            SELECT * FROM FLYPASS_PDN.TFPS_MVTOS_COBRO_SERVICIOS 
-            WHERE CDNUMERO_TRANSACCION_EXTERNA = :1`;
+            SELECT * FROM ${MOVEMENTS} 
+            WHERE ${EXTERNAL_TRANSACTION} = :1`;
         
         const values = [sessionId];
 

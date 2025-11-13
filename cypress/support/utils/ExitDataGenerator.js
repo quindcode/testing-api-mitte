@@ -4,7 +4,7 @@ import { generateSessionId } from "./SessionIdUtils";
 import plate from "../../fixtures/mitteIntegrador/plate.json"
 import exitDataTemplate from "../../fixtures/mitteIntegrador/exit.json"
 
-export class ExitDataGenerate{
+export class ExitDataGenerator{
     static generateExitData(overrides ={}){
         const dynamicExitData={
             ...exitDataTemplate,

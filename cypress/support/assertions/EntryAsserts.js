@@ -1,3 +1,4 @@
+import { MESSAGE_CONSTANTS } from "../constants/message.constants";
 import { StatusAsserts } from "./base/StatusAsserts";
 import { MessageAsserts } from "./base/MessageAsserts";
 
@@ -10,7 +11,7 @@ export class EntryAsserts{
     }
 
     static validateUnauthorizedResponse(response){
-        StatusAsserts.validateBadRequestse(response)
-        MessageAsserts.validateErrorMessage(response, 'Error al enviar entrada.')
+        StatusAsserts.validateBadRequest(response);
+        MessageAsserts.validateErrorMessage(response, MESSAGE_CONSTANTS.ERRORS.ENTRY);
     }
 }

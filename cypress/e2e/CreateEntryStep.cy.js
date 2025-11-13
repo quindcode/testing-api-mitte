@@ -1,7 +1,7 @@
-import {CreateEntry} from "../support/page_object_model/CreateEntry.cy";
-import { EntryDataGenerate } from "../support/utils/EntryDataGenerate";
-import { EntryAsserts } from "../support/asserts/EntryAsserts";
-import { DatabaseAsserts } from "../support/asserts/DatabaseAsserts";
+import {EntryService} from "../support/page_objects/EntryService";
+import { EntryDataGenerator } from "../support/utils/EntryDataGenerator";
+import { EntryAsserts } from "../support/assertions/EntryAsserts";
+import { DatabaseAsserts } from "../support/assertions/DatabaseAsserts";
  
 
  describe('Crear entrada a un parqueadero de Mitte', function () {
@@ -9,7 +9,7 @@ import { DatabaseAsserts } from "../support/asserts/DatabaseAsserts";
      const testCases=[
           {
                description: 'Validar la entrada exitosa de un vehículo a un parqueadero mite con el servicio de Flypass',
-               dataToUse: EntryDataGenerate.getAuthorizedEntry(),
+               dataToUse: EntryDataGenerator.getAuthorizedEntry(),
                validator: (response,data)=>{
                     EntryAsserts.validateSuccessResponse(response);
                     DatabaseAsserts.validateTransactionEntry(data.sessionId)
@@ -17,7 +17,7 @@ import { DatabaseAsserts } from "../support/asserts/DatabaseAsserts";
           },
           {
                description: 'Validar la entrada RECHAZADA por placa no autorizada',
-               dataToUse: EntryDataGenerate.getUnauthorizedEntry(),
+               dataToUse: EntryDataGenerator.getUnauthorizedEntry(),
                validator: (respone, data)=>{
                     EntryAsserts.validateUnauthorizedResponse(respone)
                }  
@@ -28,7 +28,7 @@ import { DatabaseAsserts } from "../support/asserts/DatabaseAsserts";
           it(testCase.description, function() {
                const entryData = testCase.dataToUse;
 
-               CreateEntry.sendEntry(testCase.dataToUse, this.idToken)
+               EntryService.sendEntry(testCase.dataToUse, this.idToken)
                .then((response)=>{
                     testCase.validator(response, entryData);
                })

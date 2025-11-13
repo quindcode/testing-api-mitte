@@ -1,8 +1,10 @@
+import { MESSAGE_CONSTANTS } from "../../constants/message.constants";
+
 export class MessageAsserts{
 
     static validateAuthorized(response){
-        expect(response.body.message).to.eq('AUTORIZADO'),
-        expect(response.body.code).to.eq("000")
+        expect(response.body.message).to.eq(MESSAGE_CONSTANTS.SUCCESS.MESSAGE);
+        expect(response.body.code).to.eq(MESSAGE_CONSTANTS.SUCCESS.CODE);
     }
 
     /**

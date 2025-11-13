@@ -25,7 +25,4 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import "./commands/loginCognito"
-import "./commands/createEntry"
-import "./commands/createPayment"
-import "./commands/SesionIdDinamic"
 

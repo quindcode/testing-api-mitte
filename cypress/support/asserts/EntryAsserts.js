@@ -6,11 +6,11 @@ export class EntryAsserts{
 
     static validateSuccessResponse(response){
         StatusAsserts.validateSuccessResponse(response);
-        MessageAsserts.validateAuthorizedEntry(response);
+        MessageAsserts.validateAuthorized(response);
     }
 
     static validateUnauthorizedResponse(response){
         StatusAsserts.validateBadRequestse(response)
-        MessageAsserts.validateUnauthorizedEntry(response)
+        MessageAsserts.validateErrorMessage(response, 'Error al enviar entrada.')
     }
 }

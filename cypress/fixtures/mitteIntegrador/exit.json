@@ -1,0 +1,11 @@
+{
+  "placeId": "b2fd3d08-bc40-4a83-a02d-cbba97148fb3",
+  "credentialType": "LICENSE_PLATE",
+  "currency": "COP",
+  "amountDue":"5000",
+  "amountPaid":"500",
+  "taxIncluded":true,
+  "exitAssumed":false,
+  "qouteId":"0e588d82-18b3-4a0e-94af-6d8a80ff2583",
+  "paymentStatus":"PAID"
+}

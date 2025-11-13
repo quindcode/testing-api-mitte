@@ -1,3 +1,23 @@
+export class CreateExit {
+  static sendExit(dataToUse, authToken){
+    return cy.request({
+        method: 'POST',
+        url: 'mitte/api/v1/webhooks/usage/end',
+        headers: {
+            'Accept': '*/*',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+        },
+        body: dataToUse,
+        failOnStatusCode: false
+    }).then((response)=>{
+      return response;
+    })
+  }
+}
+
+/* 
 import CreateEntry from "./CreateEntry.cy";
 
 const createEntry = new CreateEntry()
@@ -73,3 +93,4 @@ class ExitWhitEntry {
     }
 }
 export default ExitWhitEntry
+*/

@@ -1,5 +1,3 @@
-
-
 export class CreateEntry {
   static sendEntry(dataToUse, authToken){
     return cy.request({

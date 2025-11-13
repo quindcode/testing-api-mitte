@@ -1,6 +1,20 @@
 export class DatabaseAsserts {
 
-    static validateTransactionCreated(sessionId, attempt = 1) {
+      /**
+     * Valida que una transacción de ENTRADA exista (CDESTADO=0).
+     * @param {string} sessionId 
+     */
+    static validateTransactionEntry(sessionId){
+        this.validateTransactionCreated(sessionId, 0)
+    }
+
+ 
+    static validateTransactionExit(sessionId){
+        this.validateTransactionCreated(sessionId, 1)
+    }
+
+
+    static validateTransactionCreated(sessionId, expectState, attempt = 1) {
         
         const MAX_ATTEMPTS = 3;
         const RETRY_DELAY = 2000;
@@ -16,24 +30,24 @@ export class DatabaseAsserts {
         const values = [
             198,        // Corresponde a :1
             sessionId,  // Corresponde a :2
-            0           // Corresponde a :3 (CDESTADO)
+            expectState // Corresponde a :3 (CDESTADO)
         ];
 
         cy.task('queryDatabase', { query, values }).then((movement_result) => {
             
             if (movement_result.length ===1) {
                 expect(movement_result, 
-                `La transacción DEBE existir en la BD y tener CDESTADO=0 (sessionId: ${sessionId})`
+                `La transacción DEBE existir en la BD y tener CDESTADO=${expectState} (sessionId: ${sessionId})`
                 ).to.have.lengthOf(1);
 
-                expect(movement_result[0].CDESTADO).to.be.eq(0);
+                expect(movement_result[0].CDESTADO).to.be.eq(expectState);
                 return    
             }
             
             if (attempt < MAX_ATTEMPTS) {
                 cy.log(`Intento ${attempt} fallido (registros encontrados: ${movement_result.length}). Reintentando en ${RETRY_DELAY / 1000}s...`);
                 cy.wait(RETRY_DELAY);
-                DatabaseAsserts.validateTransactionCreated(sessionId, attempt + 1);
+                DatabaseAsserts.validateTransactionCreated(sessionId, expectState, attempt + 1);
             }
             
             else{

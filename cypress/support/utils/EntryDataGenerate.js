@@ -5,7 +5,7 @@ import entryDataTemplate from "../../fixtures/mitteIntegrador/entry.json"
 import plate from "../../fixtures/mitteIntegrador/plate.json"
 
 
-export class DataGenerate{
+export class EntryDataGenerate{
     static generateEntryData(overrides ={}){
         const dynamicData={
             ...entryDataTemplate,

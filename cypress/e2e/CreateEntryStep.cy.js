@@ -1,35 +1,26 @@
 import {CreateEntry} from "../support/page_object_model/CreateEntry.cy";
-import { DataGenerate } from "../support/utils/DataGenerate";
+import { EntryDataGenerate } from "../support/utils/EntryDataGenerate";
 import { EntryAsserts } from "../support/asserts/EntryAsserts";
 import { DatabaseAsserts } from "../support/asserts/DatabaseAsserts";
  
 
  describe('Crear entrada a un parqueadero de Mitte', function () {
-
-     before(function() {
-       
-          cy.loginCognito().then((token) => {
-               this.idToken = token;
-          });
-     });
-
      
      const testCases=[
           {
                description: 'Validar la entrada exitosa de un vehículo a un parqueadero mite con el servicio de Flypass',
-               dataToUse: DataGenerate.getAuthorizedEntry(),
+               dataToUse: EntryDataGenerate.getAuthorizedEntry(),
                validator: (response,data)=>{
                     EntryAsserts.validateSuccessResponse(response);
-                    DatabaseAsserts.validateTransactionCreated(data.sessionId)
+                    DatabaseAsserts.validateTransactionEntry(data.sessionId)
                }
           },
           {
                description: 'Validar la entrada RECHAZADA por placa no autorizada',
-               dataToUse: DataGenerate.getUnauthorizedEntry(),
+               dataToUse: EntryDataGenerate.getUnauthorizedEntry(),
                validator: (respone, data)=>{
                     EntryAsserts.validateUnauthorizedResponse(respone)
-               }
-                    
+               }  
           }
      ]
 

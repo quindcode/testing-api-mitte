@@ -20,3 +20,10 @@ import './commands'
 // require('./commands')
 
 import 'cypress-mochawesome-reporter/register';
+
+     before(function() {
+       
+          cy.loginCognito().then((token) => {
+               this.idToken = token;
+          });
+     });

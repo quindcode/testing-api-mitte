@@ -12,3 +12,4 @@ describe('Salida sin entrada', () => {
         exitWhitEntry.validateOutput()
     });
 });
+// esto se debe borrar porque no se está usando

@@ -35,6 +35,11 @@ O alternativamente puedes usar el comando personalizado.
 ```
    Esto ejecutará las pruebas automáticamente y mostrará el resultado en la terminal.
 
+3. Para ejecutar las pruebas con Allure habilitado:
+```bash
+    npm run test:allure
+```
+
 ## Cambio de Variables de Entorno
 
 El archivo `.env` contiene las variables de entorno necesarias para la conexión a la base de datos Oracle. Para cambiar estas variables, sigue estos pasos:

@@ -2,7 +2,6 @@ const { defineConfig } = require("cypress");
 const oracledb = require("oracledb");
 //const mssql = require('mssql');
 require("dotenv").config();
-const { beforeRunHook, afterRunHook } = require('cypress-mochawesome-reporter/lib');
 const { getTemporaryCredentials } = require('./cypress/support/utils/AWSConnection.js');
 
 
@@ -15,19 +14,17 @@ const connection = {
 
 
 // Establece la función para realizar consultas a la base de datos Oracle
-function queryDB(query, values = []) { // <-- CAMBIO 1: Acepta 'values'
+function queryDB(query, values = []) {
   return new Promise((resolve, reject) => {
     oracledb.getConnection(connection, (error, connection) => {
       if (error) {
         reject(error);
       } else {
-        // CAMBIO 2: Pasa 'values' a .execute()
         connection.execute(query, values, (error, result) => { 
           connection.close(() => {
             if (error) {
               reject(error);
             } else {
-              // ... (el resto de tu lógica de procesamiento está perfecta)
               if (result.rows) {
                 const metaData = result.metaData || [];
                 const processedResult = result.rows.map((row) => {
@@ -49,32 +46,24 @@ function queryDB(query, values = []) { // <-- CAMBIO 1: Acepta 'values'
   });
 }
 
-
-
 module.exports = defineConfig({
   // Ajusta el tiempo de espera predeterminado en milisegundos
   defaultCommandTimeout: 5000,
   pageLoadTimeout: 10000,
-  reporter: 'cypress-mochawesome-reporter',
-  reporterOptions: {
-    charts: true,
-    reportPageTitle: 'custom-title',
-    embeddedScreenshots: true,
-    inlineAssets: true,
-    saveAllAttempts: false,
-  },
   e2e: {
     // Al iniciar la prueba esta será la url base
     baseUrl: "https://cert-providers.flypass.com.co/",
-
+    env:{
+      allure: true,
+      allureReuseAfterSpec: true,
+    },
     setupNodeEvents(on, config) {
-      require('cypress-mochawesome-reporter/plugin')(on);
+      const allureWriter = require('@shelex/cypress-allure-plugin/writer');
+      allureWriter(on, config)
 
-  // 🔹 Carga las variables del archivo .env en Cypress
       config.env.COGNITO_USERNAME = process.env.COGNITO_USERNAME;
       config.env.COGNITO_PASSWORD = process.env.COGNITO_PASSWORD;
       config.env.COGNITO_CLIENT_ID = process.env.COGNITO_CLIENT_ID;
-      //console.log ("Esta es la variable de conexion" , CO)
 
       on("task", {
         queryDatabase({ query,values }) {
@@ -89,14 +78,6 @@ module.exports = defineConfig({
           const credentials = await getTemporaryCredentials(awsCredentials.accessKeyId, awsCredentials.secretAccessKey);
           return credentials;
         }
-      });
-      on('before:run', async (details) => {
-        console.log('override before:run');
-        await beforeRunHook(details);
-      });
-      on('after:run', async () => {
-        console.log('override after:run');
-        await afterRunHook();
       });
        return config;
     },

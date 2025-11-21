@@ -12,7 +12,7 @@ export const EXIT_FIELDS = {
     ACTUAL_START: 'actualStart',
     CREDENTIAL_TYPE: 'credentialType',
     LOCAL_IDENTIFIER: 'localIdentifier',
-    CURRENCY: 'COP',
+    CURRENCY: 'currency',
     ACTUAL_END: 'actualEnd',
     AMOUNT_DUE: 'amount_due',
     AMOUNT_PAID: 'amount_piad',

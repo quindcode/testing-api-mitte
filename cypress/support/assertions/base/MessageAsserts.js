@@ -17,5 +17,7 @@ export class MessageAsserts{
         expect(response.body.messages.error).to.eq(expectedError);
     }
 
-
+    static validateFieldSpecificError(response, fieldName, expectedError) {
+        expect(response.body.messages[fieldName]).to.eq(expectedError);
+    }
 }

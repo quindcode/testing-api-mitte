@@ -37,7 +37,7 @@ O alternativamente puedes usar el comando personalizado.
 
 3. Para ejecutar las pruebas con Allure habilitado:
 ```bash
-    npm run test:allure
+    npm npm run test:report
 ```
 
 ## Cambio de Variables de Entorno

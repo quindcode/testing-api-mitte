@@ -14,4 +14,9 @@ export class EntryAsserts{
         StatusAsserts.validateBadRequest(response);
         MessageAsserts.validateErrorMessage(response, MESSAGE_CONSTANTS.ERRORS.ENTRY);
     }
+
+    static validateMissingFieldResponse(response,fieldName){
+        StatusAsserts.validateBadRequest(response),
+        MessageAsserts.validateFieldSpecificError(response, fieldName, MESSAGE_CONSTANTS.ERRORS.REQUIRED_FIELD)
+    }
 }

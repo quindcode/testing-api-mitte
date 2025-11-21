@@ -9,6 +9,8 @@ node_modules/
 cypress/videos
 cypress/screenshots
 cypress/reports
+cypress/downloads/
+cypress/sessions/
 ## Allure reports
 allure-results/
 allure-report/

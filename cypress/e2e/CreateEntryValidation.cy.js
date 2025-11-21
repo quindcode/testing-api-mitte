@@ -9,7 +9,7 @@ describe('Validaciones de Contrato - Crear Entrada',function () {
     const requiredFields = [
         ENTRY_FIELDS.SESSION_ID, 
         ENTRY_FIELDS.LOCAL_IDENTIFIER, 
-        //ENTRY_FIELDS.ACTUAL_START, --verifucar este error aaroja : "actualStart": "must not be blank"
+        ENTRY_FIELDS.ACTUAL_START, //--verifucar este error arroja : "actualStart": "must not be blank"
         ENTRY_FIELDS.PLACE_ID
     ];
 

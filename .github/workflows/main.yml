@@ -21,8 +21,8 @@ jobs:
         with:
           working-directory: ./
         env:
-            DBUSER: ${{secrets.DB_USER }}
-            DBPASSWORD: ${{secrets.DB_PASSWORD }}
+            DB_USER: ${{secrets.DB_USER }}
+            DB_PASSWORD: ${{secrets.DB_PASSWORD }}
             DB_CONNECT_STRING: ${{secrets.DB_CONNECT_STRING }}
             COGNITO_USERNAME: ${{secrets.COGNITO_USERNAME }}
             COGNITO_PASSWORD: ${{secrets.COGNITO_PASSWORD }}

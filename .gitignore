@@ -14,3 +14,4 @@ cypress/sessions/
 ## Allure reports
 allure-results/
 allure-report/
+screenshots

@@ -7,7 +7,7 @@ on:
     branches:
       - main          # Se ejecuta en push a la rama main
       - feature/**    # Se ejecuta en push a cualquier rama que empiece con feature/
-    workflow_dispatch:
+  workflow_dispatch:
 # Permisos necesarios para el workflow
 permissions:
   contents: write

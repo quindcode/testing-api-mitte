@@ -1,11 +1,14 @@
+# Workflow para ejecutar pruebas E2E de API con Cypress y generar reportes Allure
 name: E2E API Testing execution
 
+# Define cuándo se ejecuta este workflow
 on:
   push:
     branches:
-      - main
-      - feature/**
+      - main          # Se ejecuta en push a la rama main
+      - feature/**    # Se ejecuta en push a cualquier rama que empiece con feature/
 
+# Permisos necesarios para el workflow
 permissions:
   contents: write
   pages: write
@@ -15,14 +18,18 @@ jobs:
   cypress-test-install:
     runs-on: ubuntu-latest
     steps:
+      # Paso 1: Descarga el código del repositorio
       - name: Checkout
         uses: actions/checkout@v4
       
+      # Paso 2:Instala y configura la VPN FortiClient
+      # Necesario para acceder a recursos internos durante las pruebas
       - name: Forticlient Installation        
         run: |
           sudo apt update && sudo apt install -y openconnect
           echo "${{ secrets.VPN_PWD }}" | sudo openconnect -u ${{ secrets.VPN_USER }} --passwd-on-stdin --protocol=fortinet ${{ secrets.VPN_HOST }}:${{ secrets.VPN_PORT }} --servercert ${{ secrets.VPN_CERT }} &   
   
+      # Paso 3: Ejecuta las pruebas de Cypress
       - name: Cypress tests run
         id: cypress-tests
         continue-on-error: true
@@ -30,6 +37,7 @@ jobs:
         with:
           working-directory: ./
         env:
+            # Variables de entorno necesarias para las pruebas
             DB_USER: ${{secrets.DB_USER }}
             DB_PASSWORD: ${{secrets.DB_PASSWORD }}
             DB_CONNECT_STRING: ${{secrets.DB_CONNECT_STRING }}
@@ -37,18 +45,24 @@ jobs:
             COGNITO_PASSWORD: ${{secrets.COGNITO_PASSWORD }}
             COGNITO_CLIENT_ID: ${{secrets.COGNITO_CLIENT_ID }}
 
+      # Paso 4: Genera el reporte HTML de Allure
+      # Se ejecuta siempre, incluso si las pruebas fallan
       - name: Generate Allure Report
         if: always()
         run: npm run allure:report
 
+      # Paso 5: Sube el reporte HTML como artifact descargable
+      # Permite descargar el reporte desde la pestaña Actions de GitHub
       - name: Upload Allure Report as Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report/
-          retention-days: 30
+          retention-days: 30    # Mantiene el artifact por 30 días
 
+      # Paso 6: Sube los resultados raw de Allure como artifact
+      # Útil para regenerar reportes o análisis posterior
       - name: Upload Allure Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -57,15 +71,20 @@ jobs:
           path: allure-results/
           retention-days: 30
 
+      # Paso 7: Despliega el reporte a GitHub Pages
+      # Publica el reporte en una URL pública accesible desde el navegador
+      # Nota: Requiere configuración inicial de GitHub Pages por un administrador
       - name: Deploy Allure Report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./allure-report
-          publish_branch: gh-pages
-          keep_files: false
+          publish_dir: ./allure-report    # Directorio a publicar
+          publish_branch: gh-pages        # Rama donde se publica el contenido
+          keep_files: false               # Sobrescribe archivos anteriores
 
+      # Paso 8: Marca el job como fallido si las pruebas fallaron
+      # Esto asegura que el workflow muestre el estado correcto en GitHub
       - name: Fail job if tests failed
         if: steps.cypress-tests.outcome == 'failure'
         run: exit 1

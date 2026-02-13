@@ -35,6 +35,11 @@ O alternativamente puedes usar el comando personalizado.
 ```
    Esto ejecutará las pruebas automáticamente y mostrará el resultado en la terminal.
 
+3. Para ejecutar las pruebas con Allure habilitado:
+```bash
+    npm npm run test:report
+```
+
 ## Cambio de Variables de Entorno
 
 El archivo `.env` contiene las variables de entorno necesarias para la conexión a la base de datos Oracle. Para cambiar estas variables, sigue estos pasos:
@@ -92,3 +97,4 @@ Queremos validar la obligatoriedad del cumplimiento de su esquema, donde id, y t
 Allí es donde entra en juego la validación que nos permite realizar la librería `ajv` respecto al tipo de datos y el cumplimiento del contrato (o esquema) de la respuesta obtenida.
 
 Puedes hacer uso de herramientas que nos permitan crear los esquemas de forma automática como por ejemplo: https://www.liquid-technologies.com/online-json-to-schema-converter
+

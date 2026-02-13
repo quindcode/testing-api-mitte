@@ -2,7 +2,6 @@ const { defineConfig } = require("cypress");
 const oracledb = require("oracledb");
 //const mssql = require('mssql');
 require("dotenv").config();
-const { beforeRunHook, afterRunHook } = require('cypress-mochawesome-reporter/lib');
 const { getTemporaryCredentials } = require('./cypress/support/utils/AWSConnection.js');
 
 
@@ -15,19 +14,18 @@ const connection = {
 
 
 // Establece la función para realizar consultas a la base de datos Oracle
-function queryDB(query) {
+function queryDB(query, values = []) {
   return new Promise((resolve, reject) => {
     oracledb.getConnection(connection, (error, connection) => {
       if (error) {
         reject(error);
       } else {
-        connection.execute(query, (error, result) => {
+        connection.execute(query, values, (error, result) => { 
           connection.close(() => {
             if (error) {
               reject(error);
             } else {
               if (result.rows) {
-                // Procesa el resultado para devolverlo como clave-valor (para consultas SELECT)
                 const metaData = result.metaData || [];
                 const processedResult = result.rows.map((row) => {
                   const obj = {};
@@ -38,10 +36,7 @@ function queryDB(query) {
                 });
                 resolve(processedResult);
               } else {
-                // Devuelve información sobre la cantidad de filas afectadas (para UPDATE y DELETE)
-                resolve({
-                  rowsAffected: result.rowsAffected,
-                });
+                resolve({ rowsAffected: result.rowsAffected });
               }
             }
           });
@@ -51,28 +46,28 @@ function queryDB(query) {
   });
 }
 
-
-
 module.exports = defineConfig({
   // Ajusta el tiempo de espera predeterminado en milisegundos
   defaultCommandTimeout: 5000,
   pageLoadTimeout: 10000,
-  reporter: 'cypress-mochawesome-reporter',
-  reporterOptions: {
-    charts: true,
-    reportPageTitle: 'custom-title',
-    embeddedScreenshots: true,
-    inlineAssets: true,
-    saveAllAttempts: false,
-  },
   e2e: {
     // Al iniciar la prueba esta será la url base
-    baseUrl: "https://test.security.flypass.co/flypass",
+    baseUrl: "https://cert-providers.flypass.com.co/",
+    env:{
+      allure: true,
+      allureReuseAfterSpec: true,
+    },
     setupNodeEvents(on, config) {
-      require('cypress-mochawesome-reporter/plugin')(on);
+      const allureWriter = require('@shelex/cypress-allure-plugin/writer');
+      allureWriter(on, config)
+
+      config.env.COGNITO_USERNAME = process.env.COGNITO_USERNAME;
+      config.env.COGNITO_PASSWORD = process.env.COGNITO_PASSWORD;
+      config.env.COGNITO_CLIENT_ID = process.env.COGNITO_CLIENT_ID;
+
       on("task", {
-        queryDatabase({ query }) {
-          return queryDB(query);
+        queryDatabase({ query,values }) {
+          return queryDB(query, values);
         },
         async awsSetTemporaryCredentials() {
           const awsCredentials = {
@@ -84,14 +79,7 @@ module.exports = defineConfig({
           return credentials;
         }
       });
-      on('before:run', async (details) => {
-        console.log('override before:run');
-        await beforeRunHook(details);
-      });
-      on('after:run', async () => {
-        console.log('override after:run');
-        await afterRunHook();
-      });
+       return config;
     },
   },
 });

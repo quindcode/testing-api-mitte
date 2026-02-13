@@ -1,7 +1,17 @@
 Cypress.Commands.add('loginCognito', () => {
-    // Retorna la promesa que maneja toda la lógica de la solicitud
-    return cy.fixture('login/loginCognito.json').then((loginCognito) => {
-        // Realiza la solicitud POST para iniciar sesión
+    const username = Cypress.env('COGNITO_USERNAME');
+    const password = Cypress.env('COGNITO_PASSWORD');
+    const clientId = Cypress.env('COGNITO_CLIENT_ID');
+
+        const requestBody = {
+        AuthParameters: {
+            USERNAME: username,
+            PASSWORD: password,
+        },
+        AuthFlow: "USER_PASSWORD_AUTH",
+        ClientId: clientId,
+    };
+
         return cy.request({
             method: 'POST',
             url: 'https://cognito-idp.us-east-1.amazonaws.com/',
@@ -9,10 +19,8 @@ Cypress.Commands.add('loginCognito', () => {
                 'X-Amz-Target': 'AWSCognitoIdentityProviderService.InitiateAuth',
                 'Content-Type': 'application/x-amz-json-1.1'
             },
-            body: loginCognito
+            body: requestBody
         }).then((response) => {
-            // Retorna la respuesta completa de la solicitud
             return response.body.AuthenticationResult.IdToken;
-        });
-    });
+        });    
 });

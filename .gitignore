@@ -2,8 +2,16 @@
 *.env
 ## librerías del proyecto
 node_modules/
+/jsonlogs
+/reports
 ## archivos autogenerados
 .DS_Store
 cypress/videos
 cypress/screenshots
 cypress/reports
+cypress/downloads/
+cypress/sessions/
+## Allure reports
+allure-results/
+allure-report/
+screenshots

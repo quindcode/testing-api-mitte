@@ -1,0 +1,23 @@
+export const DATABASE_CONSTANTS = {
+    PLACE_ID: 198,
+
+    TRANSACTION_STATES: {
+        ENTRY: 0,
+        EXIT: 1,
+    },
+
+    TABLES:{
+        MOVEMENTS: 'FLYPASS_PDN.TFPS_MVTOS_COBRO_SERVICIOS'
+    },
+
+    COLUMNS: {
+        PLACE_ATTENTION: 'CDPUNTO_ATENCION_SER',
+        EXTERNAL_TRANSACTION: 'CDNUMERO_TRANSACCION_EXTERNA',
+        STATE: 'CDESTADO'
+    },
+
+    RETRY:{
+        MAX_ATTEMPTS: 3,
+        RETRY_DELAY: 2000
+    }
+}

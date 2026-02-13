@@ -1,7 +1,4 @@
 {
-    "sessionId": "{{sessionId}}",
-    "facilityId": "{{facilityId}}",
-    "actualStart":"{{actualStart}}",
-    "credentialType": "{{credentialType}}",
-    "localIdentifier": "{{localIdentifier}}"
+  "placeId": "b2fd3d08-bc40-4a83-a02d-cbba97148fb3", 
+  "credentialType": "LICENSE_PLATE"
 }

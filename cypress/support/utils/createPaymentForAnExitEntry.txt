@@ -1,7 +1,0 @@
-actualEnd=2024-04-15 16:55:24
-sessionId=4165165165-6515616-564f
-facilityId=123
-stayAmountSa=300
-actualStart=2024-04-09 10:05:48
-credentialType=LICENSE_PLATE
-localIdentifier=LMA530

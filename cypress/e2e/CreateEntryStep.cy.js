@@ -1,16 +1,16 @@
-import {EntryService} from "../support/page_objects/EntryService";
+import { EntryService } from "../support/page_objects/EntryService";
 import { EntryDataGenerator } from "../support/utils/EntryDataGenerator";
 import { EntryAsserts } from "../support/assertions/EntryAsserts";
 import { DatabaseAsserts } from "../support/assertions/DatabaseAsserts";
- 
 
- describe('Crear entrada a un parqueadero de Mitte', function () {
-     
-     const testCases=[
+
+describe('Crear entrada a un parqueadero de Mitte', function () {
+
+     const testCases = [
           {
                description: 'Validar la entrada exitosa de un vehículo a un parqueadero mite con el servicio de Flypass',
                dataToUse: EntryDataGenerator.getAuthorizedEntry(),
-               validator: (response,data)=>{
+               validator: (response, data) => {
                     EntryAsserts.validateSuccessResponse(response);
                     DatabaseAsserts.validateTransactionEntry(data.sessionId)
                }
@@ -18,20 +18,20 @@ import { DatabaseAsserts } from "../support/assertions/DatabaseAsserts";
           {
                description: 'Validar la entrada RECHAZADA por placa no autorizada',
                dataToUse: EntryDataGenerator.getUnauthorizedEntry(),
-               validator: (respone, data)=>{
+               validator: (respone, data) => {
                     EntryAsserts.validateUnauthorizedResponse(respone)
-               }  
+               }
           }
      ]
 
      testCases.forEach((testCase) => {
-          it(testCase.description, function() {
+          it(testCase.description, function () {
                const entryData = testCase.dataToUse;
 
                EntryService.sendEntry(testCase.dataToUse, this.idToken)
-               .then((response)=>{
-                    testCase.validator(response, entryData);
-               })
+                    .then((response) => {
+                         testCase.validator(response, entryData);
+                    })
           });
      });
- });
+});

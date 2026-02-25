@@ -8,7 +8,7 @@ describe('Crear entrada a un parqueadero de Mitte', function () {
 
      const testCases = [
           {
-               description: 'Validar la entrada exitosa de un vehículo a un parqueadero mite con el servicio de Flypass',
+               description: 'Validar la entrada exitosa de un vehículo a un parqueadero Mitte con el servicio de Flypass',
                dataToUse: EntryDataGenerator.getAuthorizedEntry(),
                validator: (response, data) => {
                     EntryAsserts.validateSuccessResponse(response);
@@ -18,8 +18,8 @@ describe('Crear entrada a un parqueadero de Mitte', function () {
           {
                description: 'Validar la entrada RECHAZADA por placa no autorizada',
                dataToUse: EntryDataGenerator.getUnauthorizedEntry(),
-               validator: (respone, data) => {
-                    EntryAsserts.validateUnauthorizedResponse(respone)
+               validator: (response, data) => {
+                    EntryAsserts.validateUnauthorizedResponse(response)
                }
           }
      ]

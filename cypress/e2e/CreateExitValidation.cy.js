@@ -10,12 +10,6 @@ describe('Validaciones de Contrato - Crear Salida', function () {
         EXIT_FIELDS.ACTUAL_START,
         EXIT_FIELDS.CURRENCY,
         EXIT_FIELDS.ACTUAL_END
-        //EXIT_FIELDS.AMOUNT_DUE, // "No debe ser null"
-        //EXIT_FIELDS.AMOUNT_PAID, // "No debe ser null"
-        //EXIT_FIELDS.TAX_INCLUDED, // "No debe ser null"
-        //EXIT_FIELDS.EXIT_ASSUMED, // "No debe ser null"
-        //EXIT_FIELDS.QOUTE_ID, // No es obligatorio
-        //EXIT_FIELDS.PAYMENT_STATUS //"Unexpected character ('}' (code 125)): was expecting double-quote to start field name\n at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 15, column: 1]"
     ]
 
     requiredFields.forEach((field) => {
